@@ -390,11 +390,11 @@
     </div>
     <div class="info-card">
       <h4>Ultraschall-Kanäle</h4>
-      <div class="info-row"><span>20k (Low)</span><span>Ø 0.4728 V</span></div>
-      <div class="info-row"><span>40k (Mid)</span><span>Ø 1.2205 V</span></div>
-      <div class="info-row"><span>55k (High)</span><span>Ø 1.7119 V</span></div>
-      <div class="info-row"><span>80k (FM)</span><span>Ø 2.4892 V</span></div>
-      <div class="info-row"><span>110k (CF)</span><span>Ø 3.5319 V</span></div>
+      <div class="info-row"><span>20k (Low)</span><span>Ø 0.4728 dB/m</span></div>
+      <div class="info-row"><span>40k (Mid)</span><span>Ø 1.2205 dB/m</span></div>
+      <div class="info-row"><span>55k (High)</span><span>Ø 1.7119 dB/m</span></div>
+      <div class="info-row"><span>80k (FM)</span><span>Ø 2.4892 dB/m</span></div>
+      <div class="info-row"><span>110k (CF)</span><span>Ø 3.5319 dB/m</span></div>
       <div class="info-row"><span>Trend alle</span><span>↘ leicht sinkend</span></div>
     </div>
     <div class="info-card">
@@ -519,15 +519,15 @@ new Chart(document.getElementById('ultraChart'), {
   data: {
     labels,
     datasets: [
-      mkLine('#f78166', D.a20k, '20k Low (V)'),
-      mkLine('#ffa657', D.a40k, '40k Mid (V)'),
-      mkLine('#56d364', D.a55k, '55k High (V)'),
-      mkLine('#79c0ff', D.a80k, '80k FM (V)'),
-      mkLine('#d2a8ff', D.a110k, '110k CF (V)'),
+      mkLine('#f78166', D.a20k, '20k Low (dB/m)'),
+      mkLine('#ffa657', D.a40k, '40k Mid (dB/m)'),
+      mkLine('#56d364', D.a55k, '55k High (dB/m)'),
+      mkLine('#79c0ff', D.a80k, '80k FM (dB/m)'),
+      mkLine('#d2a8ff', D.a110k, '110k CF (dB/m)'),
     ]
   },
   options: { ...BASE_OPTIONS, scales: { ...BASE_OPTIONS.scales,
-    y: { ...BASE_OPTIONS.scales.y, ticks: { color: tickColor, font:{size:9}, callback: v => v.toFixed(2)+' V' } }
+    y: { ...BASE_OPTIONS.scales.y, ticks: { color: tickColor, font:{size:9}, callback: v => v.toFixed(2)+' dB/m' } }
   }}
 });
 
