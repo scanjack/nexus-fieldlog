@@ -332,27 +332,27 @@ a{color:var(--accent);text-decoration:none}
           <div class="us-bar-row">
             <span class="us-bar-label">20k Low</span>
             <div class="us-bar"><div class="us-bar-fill" style="width:16.7%;background:var(--accent)"></div></div>
-            <span class="us-bar-val">Ø 0.502 V</span>
+            <span class="us-bar-val">Ø 0.502 dB/m</span>
           </div>
           <div class="us-bar-row">
             <span class="us-bar-label">40k Mid</span>
             <div class="us-bar"><div class="us-bar-fill" style="width:35.4%;background:var(--accent2)"></div></div>
-            <span class="us-bar-val">Ø 1.061 V</span>
+            <span class="us-bar-val">Ø 1.061 dB/m</span>
           </div>
           <div class="us-bar-row">
             <span class="us-bar-label">55k High</span>
             <div class="us-bar"><div class="us-bar-fill" style="width:47.0%;background:var(--accent4)"></div>  </div>
-            <span class="us-bar-val">Ø 1.410 V</span>
+            <span class="us-bar-val">Ø 1.410 dB/m</span>
           </div>
           <div class="us-bar-row">
             <span class="us-bar-label">80k FM</span>
             <div class="us-bar"><div class="us-bar-fill" style="width:68.0%;background:var(--accent5)"></div></div>
-            <span class="us-bar-val">Ø 2.037 V</span>
+            <span class="us-bar-val">Ø 2.037 dB/m</span>
           </div>
           <div class="us-bar-row">
             <span class="us-bar-label">110k CF</span>
             <div class="us-bar"><div class="us-bar-fill" style="width:99.7%;background:var(--accent3)"></div></div>
-            <span class="us-bar-val">Ø 2.990 V</span>
+            <span class="us-bar-val">Ø 2.990 dB/m</span>
           </div>
         </div>
         <div class="info-row" style="margin-top:10px"><span class="info-key">Trend alle</span><span class="info-val">&#8599; leicht steigend</span></div>
@@ -478,14 +478,14 @@ new Chart(document.getElementById('chartUS'), {
   data:{
     labels:thinL(LABELS),
     datasets:[
-      {label:'20k Low',  data:thin(A20K), borderColor:'#58a6ff',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
-      {label:'40k Mid',  data:thin(A40K), borderColor:'#3fb950',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
-      {label:'55k High', data:thin(A55K), borderColor:'#d2a8ff',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
-      {label:'80k FM',   data:thin(A80K), borderColor:'#ffa657',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
-      {label:'110k CF',  data:thin(A110K),borderColor:'#f78166',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2}
+      {label:'20k Low (dB/m)',  data:thin(A20K), borderColor:'#58a6ff',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
+      {label:'40k Mid (dB/m)',  data:thin(A40K), borderColor:'#3fb950',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
+      {label:'55k High (dB/m)', data:thin(A55K), borderColor:'#d2a8ff',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
+      {label:'80k FM (dB/m)',   data:thin(A80K), borderColor:'#ffa657',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2},
+      {label:'110k CF (dB/m)',  data:thin(A110K),borderColor:'#f78166',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.2}
     ]
   },
-  options:lineOpts('V', 0.4, 3.1)
+  options:lineOpts('dB/m', 0.4, 3.1)
 });
 
 // ── ULTRASCHALL NORMIERT ──
