@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS/LOG — 05.03.2026 Session 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #21262d;
+  --accent: #58a6ff;
+  --accent2: #3fb950;
+  --accent3: #f78166;
+  --accent4: #d2a8ff;
+  --accent5: #ffa657;
+  --muted: #8b949e;
+  --text: #e6edf3;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  padding:0 0 2rem;
+}
+
+/* ── HEADER ── */
+.header{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:1.2rem 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.header-left{display:flex;align-items:center;gap:1rem}
+.logo{
+  font-family:'Space Mono',monospace;
+  font-size:1.4rem;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:-0.03em;
+}
+.logo span{color:var(--muted);font-weight:400}
+.badge{
+  font-family:'Space Mono',monospace;
+  font-size:0.68rem;
+  padding:0.2rem 0.55rem;
+  border-radius:999px;
+  background:rgba(88,166,255,0.12);
+  border:1px solid rgba(88,166,255,0.3);
+  color:var(--accent);
+}
+.badge.green{background:rgba(63,185,80,0.12);border-color:rgba(63,185,80,0.3);color:var(--accent2)}
+.badge.orange{background:rgba(255,166,87,0.12);border-color:rgba(255,166,87,0.3);color:var(--accent5)}
+.badge.purple{background:rgba(210,168,255,0.12);border-color:rgba(210,168,255,0.3);color:var(--accent4)}
+.header-meta{
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;
+  color:var(--muted);
+  text-align:right;
+  line-height:1.7;
+}
+.header-meta strong{color:var(--text)}
+
+/* ── MAIN LAYOUT ── */
+.main{padding:1.5rem 2rem;display:flex;flex-direction:column;gap:1.5rem}
+
+/* ── SECTION TITLES ── */
+.section-title{
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;
+  color:var(--muted);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:0.75rem;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── KPI GRID ── */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:0.75rem;
+}
+.kpi{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:0.85rem 0.75rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.3rem;
+}
+.kpi-label{font-size:0.65rem;color:var(--muted);letter-spacing:0.07em;text-transform:uppercase}
+.kpi-value{
+  font-family:'Space Mono',monospace;
+  font-size:1.45rem;
+  font-weight:700;
+  line-height:1;
+}
+.kpi-sub{font-size:0.65rem;color:var(--muted);font-family:'Space Mono',monospace}
+.kpi-unit{font-size:0.7rem;color:var(--muted);font-family:'Space Mono',monospace}
+.c-blue{color:var(--accent)}
+.c-green{color:var(--accent2)}
+.c-red{color:var(--accent3)}
+.c-purple{color:var(--accent4)}
+.c-orange{color:var(--accent5)}
+
+/* ── CHART GRIDS ── */
+.chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem}
+.chart-grid-23{display:grid;grid-template-columns:2fr 1fr;gap:0.75rem}
+.chart-grid-us{display:grid;grid-template-columns:repeat(5,1fr);gap:0.75rem}
+.chart-grid-us2{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0.75rem}
+
+.chart-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem;
+}
+.chart-title{
+  font-family:'Space Mono',monospace;
+  font-size:0.68rem;
+  color:var(--muted);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:0.75rem;
+}
+.chart-wrap{position:relative;width:100%}
+.chart-wrap canvas{max-height:180px!important}
+.chart-wrap-sm canvas{max-height:140px!important}
+.chart-wrap-polar canvas{max-height:200px!important;max-width:200px!important;margin:0 auto;display:block}
+
+/* ── INFO GRID ── */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem}
+.info-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+}
+.info-card-title{
+  font-family:'Space Mono',monospace;
+  font-size:0.7rem;
+  color:var(--accent);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:0.75rem;
+  padding-bottom:0.5rem;
+  border-bottom:1px solid var(--border);
+}
+.info-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0.22rem 0;
+  font-size:0.78rem;
+  border-bottom:1px solid rgba(33,38,45,0.5);
+}
+.info-row:last-child{border-bottom:none}
+.info-row .label{color:var(--muted)}
+.info-row .val{font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text)}
+
+/* ── US BARS in info ── */
+.us-bar-row{display:flex;align-items:center;gap:0.5rem;padding:0.2rem 0}
+.us-bar-label{font-size:0.7rem;color:var(--muted);width:4.5rem;font-family:'Space Mono',monospace}
+.us-bar-track{flex:1;background:var(--border);border-radius:4px;height:6px}
+.us-bar-fill{height:6px;border-radius:4px}
+.us-bar-val{font-size:0.68rem;font-family:'Space Mono',monospace;color:var(--text);width:5rem;text-align:right}
+
+/* ── FOOTER ── */
+.footer{
+  margin-top:1rem;
+  padding:1rem 2rem;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:0.68rem;
+  color:var(--muted);
+  font-family:'Space Mono',monospace;
+  flex-wrap:wrap;
+  gap:0.5rem;
+}
+.footer a{color:var(--accent);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1400px){
+  .kpi-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:900px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-grid-2,.chart-grid-3,.chart-grid-23,.chart-grid-us,.chart-grid-us2{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+  .header{flex-direction:column;align-items:flex-start}
+  .header-meta{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo">NEXUS<span>/LOG</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+      <span class="badge">XIAO ESP32S3</span>
+      <span class="badge green">BME680</span>
+      <span class="badge green">AIR530 GPS</span>
+      <span class="badge orange">SEN-15901</span>
+      <span class="badge purple">5× Ultraschall</span>
+      <span class="badge">Stationär</span>
+    </div>
+  </div>
+  <div class="header-meta">
+    <strong>05. März 2026</strong> — Session 1<br>
+    16:50:24 – 18:57:17 Uhr &nbsp;|&nbsp; <strong>3,808</strong> Datenpunkte &nbsp;|&nbsp; 2-Sek-Intervall
+  </div>
+</header>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+
+  <!-- KPI GRID -->
+  <div>
+    <div class="section-title">Schlüsselwerte / Key Metrics</div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Temperatur</div>
+        <div class="kpi-value c-orange">15.0<span class="kpi-unit"> °C</span></div>
+        <div class="kpi-sub">↓9.5 ↑20.2 °C</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Luftfeuchte</div>
+        <div class="kpi-value c-blue">49.6<span class="kpi-unit"> %</span></div>
+        <div class="kpi-sub">↓40.3 ↑65.8 %</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Taupunkt</div>
+        <div class="kpi-value c-purple">4.4<span class="kpi-unit"> °C</span></div>
+        <div class="kpi-sub">Ø über Session</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Luftdruck</div>
+        <div class="kpi-value c-green">1005.08<span class="kpi-unit"> hPa</span></div>
+        <div class="kpi-sub">↓1004.89 ↑1005.43</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Gas-Widerstand</div>
+        <div class="kpi-value c-accent2">146.5<span class="kpi-unit"> kΩ</span></div>
+        <div class="kpi-sub">max 155.5 kΩ</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">GPS-Sats</div>
+        <div class="kpi-value c-green">21<span class="kpi-unit"> max</span></div>
+        <div class="kpi-sub">Fix 99.7% | HDOP 0.6</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Windgeschw.</div>
+        <div class="kpi-value c-blue">0.0<span class="kpi-unit"> m/s</span></div>
+        <div class="kpi-sub">Böe max 0.0 m/s</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Niederschlag</div>
+        <div class="kpi-value c-muted">0.0<span class="kpi-unit"> mm</span></div>
+        <div class="kpi-sub">kein Regen</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIKROKLIMA CHARTS -->
+  <div>
+    <div class="section-title">Mikroklima / Microclimate — BME680</div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Temperatur &amp; Taupunkt — °C</div>
+        <div class="chart-wrap"><canvas id="chartTempDew"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Relative Luftfeuchte — %</div>
+        <div class="chart-wrap"><canvas id="chartHum"></canvas></div>
+      </div>
+    </div>
+    <div style="margin-top:0.75rem" class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Gas-Widerstand — kΩ</div>
+        <div class="chart-wrap"><canvas id="chartGas"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Luftdruck — hPa</div>
+        <div class="chart-wrap"><canvas id="chartPres"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ULTRASCHALL CHARTS -->
+  <div>
+    <div class="section-title">Ultraschall / Ultrasound — 5 Kanäle</div>
+    <div class="chart-grid-us">
+      <div class="chart-card">
+        <div class="chart-title">20 kHz Low — dB/m</div>
+        <div class="chart-wrap chart-wrap-sm"><canvas id="chartUS20"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">40 kHz Mid — dB/m</div>
+        <div class="chart-wrap chart-wrap-sm"><canvas id="chartUS40"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">55 kHz High — dB/m</div>
+        <div class="chart-wrap chart-wrap-sm"><canvas id="chartUS55"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">80 kHz FM — dB/m</div>
+        <div class="chart-wrap chart-wrap-sm"><canvas id="chartUS80"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">110 kHz CF — dB/m</div>
+        <div class="chart-wrap chart-wrap-sm"><canvas id="chartUS110"></canvas></div>
+      </div>
+    </div>
+    <div style="margin-top:0.75rem" class="chart-grid-us2">
+      <div class="chart-card">
+        <div class="chart-title">Normierter Trend — Alle 5 Kanäle (min-max)</div>
+        <div class="chart-wrap"><canvas id="chartUSNorm"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">GPS-Satelliten</div>
+        <div class="chart-wrap"><canvas id="chartSats"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">HDOP (Genauigkeit, cap 10)</div>
+        <div class="chart-wrap"><canvas id="chartHDOP"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WETTERSTATION CHARTS -->
+  <div>
+    <div class="section-title">Wetterstation / Weather Station — SEN-15901</div>
+    <div class="chart-grid-23">
+      <div class="chart-card">
+        <div class="chart-title">Windgeschwindigkeit — Ø &amp; Böe (m/s)</div>
+        <div class="chart-wrap"><canvas id="chartWind"></canvas></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+        <div class="chart-card" style="flex:1">
+          <div class="chart-title">Windrose — Häufigkeit</div>
+          <div class="chart-wrap chart-wrap-polar"><canvas id="chartWindrose"></canvas></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:0.75rem">
+      <div class="chart-card">
+        <div class="chart-title">Niederschlag kumulativ — mm</div>
+        <div class="chart-wrap"><canvas id="chartRain"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO GRID -->
+  <div>
+    <div class="section-title">Sensor-Infos / Sensor Details</div>
+    <div class="info-grid">
+
+      <div class="info-card">
+        <div class="info-card-title">🌡 Mikroklimatik / Microclimate</div>
+        <div class="info-row"><span class="label">Temp Ø</span><span class="val">15.0 °C</span></div>
+        <div class="info-row"><span class="label">Temp Min / Max</span><span class="val">9.5 / 20.2 °C</span></div>
+        <div class="info-row"><span class="label">Feuchte Ø</span><span class="val">49.6 %</span></div>
+        <div class="info-row"><span class="label">Taupunkt Ø</span><span class="val">4.4 °C</span></div>
+        <div class="info-row"><span class="label">Druck Ø</span><span class="val">1005.08 hPa</span></div>
+        <div class="info-row"><span class="label">Druck Min / Max</span><span class="val">1004.89 / 1005.43 hPa</span></div>
+        <div class="info-row"><span class="label">Sensor</span><span class="val">BME680</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">💨 Gas-Sensor / Gas Resistance</div>
+        <div class="info-row"><span class="label">Gas Ø (stabil)</span><span class="val">146.5 kΩ</span></div>
+        <div class="info-row"><span class="label">Gas Max</span><span class="val">155.5 kΩ</span></div>
+        <div class="info-row"><span class="label">Gas Min (Start)</span><span class="val">4.30 kΩ</span></div>
+        <div class="info-row"><span class="label">Warmup-Phase</span><span class="val">~24 Min</span></div>
+        <div class="info-row"><span class="label">Interpretation</span><span class="val">Gute Luftqualität</span></div>
+        <div class="info-row"><span class="label">Hinweis</span><span class="val">Sensor-Anlaufphase sichtbar</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">📡 GPS / AIR530</div>
+        <div class="info-row"><span class="label">Fix-Start</span><span class="val">16:50:24 Uhr</span></div>
+        <div class="info-row"><span class="label">Max. Satelliten</span><span class="val">21 Sats</span></div>
+        <div class="info-row"><span class="label">Ø Satelliten</span><span class="val">19.1</span></div>
+        <div class="info-row"><span class="label">Min. HDOP</span><span class="val">0.6 (exzellent)</span></div>
+        <div class="info-row"><span class="label">Fix-Rate</span><span class="val">99.7 %</span></div>
+        <div class="info-row"><span class="label">Region</span><span class="val">Geschütztes Habitat</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">🦇 Ultraschall / Ultrasound</div>
+        <div style="margin-bottom:0.4rem;font-size:0.65rem;color:var(--muted)">Alle Werte in dB/m</div>
+        <div class="us-bar-row">
+          <span class="us-bar-label">20k Low</span>
+          <div class="us-bar-track"><div class="us-bar-fill" style="width:16%;background:var(--accent)"></div></div>
+          <span class="us-bar-val">0.5463 dB/m</span>
+        </div>
+        <div class="us-bar-row">
+          <span class="us-bar-label">40k Mid</span>
+          <div class="us-bar-track"><div class="us-bar-fill" style="width:32%;background:var(--accent2)"></div></div>
+          <span class="us-bar-val">1.1051 dB/m</span>
+        </div>
+        <div class="us-bar-row">
+          <span class="us-bar-label">55k High</span>
+          <div class="us-bar-track"><div class="us-bar-fill" style="width:43%;background:var(--accent4)"></div></div>
+          <span class="us-bar-val">1.4499 dB/m</span>
+        </div>
+        <div class="us-bar-row">
+          <span class="us-bar-label">80k FM</span>
+          <div class="us-bar-track"><div class="us-bar-fill" style="width:61%;background:var(--accent5)"></div></div>
+          <span class="us-bar-val">2.0756 dB/m</span>
+        </div>
+        <div class="us-bar-row">
+          <span class="us-bar-label">110k CF</span>
+          <div class="us-bar-track"><div class="us-bar-fill" style="width:89%;background:var(--accent3)"></div></div>
+          <span class="us-bar-val">3.0277 dB/m</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">🌀 Wetterstation / Weather Station</div>
+        <div class="info-row"><span class="label">Wind Ø</span><span class="val">0.0 m/s</span></div>
+        <div class="info-row"><span class="label">Max. Böe</span><span class="val">0.0 m/s</span></div>
+        <div class="info-row"><span class="label">Hauptrichtung</span><span class="val">W (West)</span></div>
+        <div class="info-row"><span class="label">Niederschlag</span><span class="val">0.0 mm</span></div>
+        <div class="info-row"><span class="label">Bewölkung</span><span class="val">0 %</span></div>
+        <div class="info-row"><span class="label">Sensor</span><span class="val">SparkFun SEN-15901</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">📋 Session-Info / Session Details</div>
+        <div class="info-row"><span class="label">Datum</span><span class="val">05.03.2026</span></div>
+        <div class="info-row"><span class="label">Zeitraum</span><span class="val">16:50:24 – 18:57:17</span></div>
+        <div class="info-row"><span class="label">Dauer</span><span class="val">ca. 2 h 7 min</span></div>
+        <div class="info-row"><span class="label">Datenpunkte</span><span class="val">3,808</span></div>
+        <div class="info-row"><span class="label">Intervall</span><span class="val">2 Sek.</span></div>
+        <div class="info-row"><span class="label">Modus</span><span class="val">Stationär</span></div>
+        <div class="info-row"><span class="label">Datei</span><span class="val">05-03-26-1.csv</span></div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <span>NEXUS/LOG &copy; 2026 — Citizen Science Fledermaus &amp; Bio-Akustik</span>
+  <span>
+    <a href="index.html">← Übersicht</a>
+    &nbsp;|&nbsp;
+    <a href="https://github.com/scanjack/nexus-fieldlog" target="_blank">GitHub</a>
+  </span>
+  <span>Chart.js 4.4.1 &nbsp;|&nbsp; GPS-Koordinaten aus Habitatschutz nicht veröffentlicht</span>
+</footer>
+
+<!-- ═══ CHART.JS DATA & INIT ═══ -->
+<script>
+const LABELS = ["05.03.2026 16:50:24", "05.03.2026 16:51:22", "05.03.2026 16:52:22", "05.03.2026 16:53:22", "05.03.2026 16:54:22", "05.03.2026 16:55:22", "05.03.2026 16:56:22", "05.03.2026 16:57:22", "05.03.2026 16:58:22", "05.03.2026 16:59:22", "05.03.2026 17:00:22", "05.03.2026 17:01:22", "05.03.2026 17:02:23", "05.03.2026 17:03:23", "05.03.2026 17:04:23", "05.03.2026 17:05:23", "05.03.2026 17:06:23", "05.03.2026 17:07:23", "05.03.2026 17:08:23", "05.03.2026 17:09:23", "05.03.2026 17:10:23", "05.03.2026 17:11:23", "05.03.2026 17:12:23", "05.03.2026 17:13:23", "05.03.2026 17:14:23", "05.03.2026 17:15:23", "05.03.2026 17:16:23", "05.03.2026 17:17:23", "05.03.2026 17:18:23", "05.03.2026 17:19:23", "05.03.2026 17:20:23", "05.03.2026 17:21:23", "05.03.2026 17:22:23", "05.03.2026 17:23:23", "05.03.2026 17:24:23", "05.03.2026 17:25:23", "05.03.2026 17:26:23", "05.03.2026 17:27:23", "05.03.2026 17:28:23", "05.03.2026 17:29:23", "05.03.2026 17:30:23", "05.03.2026 17:31:23", "05.03.2026 17:32:23", "05.03.2026 17:33:23", "05.03.2026 17:34:23", "05.03.2026 17:35:23", "05.03.2026 17:36:23", "05.03.2026 17:37:23", "05.03.2026 17:38:23", "05.03.2026 17:39:23", "05.03.2026 17:40:23", "05.03.2026 17:41:23", "05.03.2026 17:42:23", "05.03.2026 17:43:23", "05.03.2026 17:44:23", "05.03.2026 17:45:23", "05.03.2026 17:46:23", "05.03.2026 17:47:23", "05.03.2026 17:48:23", "05.03.2026 17:49:23", "05.03.2026 17:50:23", "05.03.2026 17:51:23", "05.03.2026 17:52:23", "05.03.2026 17:53:23", "05.03.2026 17:54:23", "05.03.2026 17:55:23", "05.03.2026 17:56:23", "05.03.2026 17:57:23", "05.03.2026 17:58:23", "05.03.2026 17:59:23", "05.03.2026 18:00:23", "05.03.2026 18:01:23", "05.03.2026 18:02:23", "05.03.2026 18:03:23", "05.03.2026 18:04:23", "05.03.2026 18:05:23", "05.03.2026 18:06:23", "05.03.2026 18:07:23", "05.03.2026 18:08:23", "05.03.2026 18:09:23", "05.03.2026 18:10:23", "05.03.2026 18:11:23", "05.03.2026 18:12:23", "05.03.2026 18:13:23", "05.03.2026 18:14:23", "05.03.2026 18:15:23", "05.03.2026 18:16:23", "05.03.2026 18:17:23", "05.03.2026 18:18:23", "05.03.2026 18:19:23", "05.03.2026 18:20:23", "05.03.2026 18:21:23", "05.03.2026 18:22:23", "05.03.2026 18:23:23", "05.03.2026 18:24:23", "05.03.2026 18:25:23", "05.03.2026 18:26:23", "05.03.2026 18:27:23", "05.03.2026 18:28:23", "05.03.2026 18:29:23", "05.03.2026 18:30:23", "05.03.2026 18:31:23", "05.03.2026 18:32:23", "05.03.2026 18:33:23", "05.03.2026 18:34:23", "05.03.2026 18:35:23", "05.03.2026 18:36:23", "05.03.2026 18:37:23", "05.03.2026 18:38:23", "05.03.2026 18:39:23", "05.03.2026 18:40:23", "05.03.2026 18:41:23", "05.03.2026 18:42:23", "05.03.2026 18:43:23", "05.03.2026 18:44:23", "05.03.2026 18:45:23", "05.03.2026 18:46:23", "05.03.2026 18:47:23", "05.03.2026 18:48:23", "05.03.2026 18:49:23", "05.03.2026 18:50:23", "05.03.2026 18:51:23", "05.03.2026 18:52:23", "05.03.2026 18:53:23", "05.03.2026 18:54:23", "05.03.2026 18:55:23", "05.03.2026 18:56:23"];
+const TEMP   = [19.36, 19.74, 19.63, 20.04, 20.04, 19.62, 19.04, 19.42, 19.28, 19.54, 19.54, 19.65, 19.63, 19.87, 19.51, 19.6, 19.41, 19.67, 19.65, 19.15, 18.58, 18.52, 18.64, 18.61, 18.38, 18.52, 18.23, 18.27, 18.2, 18.09, 18.14, 18.09, 17.92, 18.14, 18.01, 17.93, 18.08, 17.82, 17.81, 17.98, 17.73, 17.71, 17.59, 17.61, 17.52, 17.31, 17.17, 16.99, 16.9, 16.85, 16.73, 16.61, 16.49, 16.32, 16.17, 15.94, 15.88, 15.7, 15.38, 15.11, 14.94, 14.77, 14.72, 14.48, 14.36, 14.34, 14.14, 14.11, 13.98, 13.95, 14.02, 13.91, 13.69, 13.74, 13.64, 13.55, 13.44, 13.31, 13.25, 13.15, 13.01, 12.83, 12.72, 12.79, 12.87, 12.84, 12.7, 12.54, 12.51, 12.45, 12.46, 12.5, 12.52, 12.37, 12.3, 12.15, 12.17, 12.23, 12.11, 12.01, 11.83, 11.67, 11.62, 11.56, 11.39, 11.28, 11.19, 11.25, 11.05, 10.96, 10.91, 11.42, 11.52, 11.34, 11.06, 10.78, 10.6, 10.43, 10.31, 10.19, 9.89, 9.69, 9.79, 9.77, 9.65, 9.49, 9.47];
+const DEW    = [6.77, 6.9, 6.07, 6.51, 6.53, 5.78, 5.71, 6.06, 5.82, 6.2, 6.14, 6.29, 6.14, 6.41, 5.94, 5.86, 5.9, 6.38, 6.01, 5.69, 5.17, 5.26, 5.71, 5.41, 5.21, 5.55, 5.4, 5.4, 5.46, 5.58, 5.29, 5.29, 5.2, 5.59, 5.13, 5.21, 5.43, 4.93, 4.92, 5.36, 4.91, 5.3, 5.15, 5.07, 5.03, 5.08, 4.8, 5.01, 5.06, 5.05, 4.84, 4.7, 4.64, 4.77, 4.9, 4.85, 4.6, 4.58, 4.42, 4.28, 4.09, 3.98, 3.94, 3.89, 3.86, 3.84, 3.86, 3.79, 3.7, 3.72, 3.75, 3.69, 3.54, 3.65, 3.67, 3.61, 3.6, 3.53, 3.51, 3.52, 3.54, 3.38, 3.46, 3.39, 3.43, 3.49, 3.38, 3.33, 3.27, 3.34, 3.35, 3.36, 3.36, 3.37, 3.3, 3.27, 3.33, 3.44, 3.38, 3.36, 3.27, 3.26, 3.29, 3.3, 3.29, 3.26, 3.25, 3.32, 3.18, 3.26, 3.26, 3.55, 3.48, 3.35, 3.32, 3.31, 3.23, 3.27, 3.22, 3.16, 3.11, 3.11, 3.26, 3.25, 3.23, 3.19, 3.19];
+const HUM    = [43.94, 43.28, 41.18, 41.35, 41.41, 40.38, 41.65, 41.67, 41.34, 41.75, 41.6, 41.74, 41.34, 41.52, 41.12, 40.64, 41.23, 41.95, 40.94, 41.31, 41.28, 41.71, 42.7, 41.91, 41.93, 42.57, 42.86, 42.77, 43.13, 43.82, 42.79, 42.92, 43.14, 43.69, 42.67, 43.13, 43.37, 42.59, 42.6, 43.44, 42.74, 43.99, 43.85, 43.58, 43.69, 44.46, 43.95, 45.11, 45.55, 45.66, 45.35, 45.23, 45.4, 46.3, 47.2, 47.72, 47.07, 47.53, 48.01, 48.37, 48.25, 48.39, 48.41, 49.01, 49.29, 49.28, 49.99, 49.84, 49.93, 50.09, 49.99, 50.13, 50.34, 50.56, 50.95, 51.02, 51.38, 51.54, 51.66, 52.03, 52.59, 52.62, 53.29, 52.81, 52.64, 52.98, 53.05, 53.43, 53.32, 53.81, 53.8, 53.69, 53.62, 54.19, 54.17, 54.61, 54.75, 55.0, 55.17, 55.47, 55.77, 56.31, 56.59, 56.87, 57.46, 57.79, 58.1, 58.13, 58.32, 59.03, 59.23, 58.4, 57.74, 57.92, 58.86, 59.91, 60.32, 61.17, 61.46, 61.69, 62.75, 63.55, 63.8, 63.88, 64.29, 64.78, 64.9];
+const PRES   = [1005.31, 1005.35, 1005.38, 1005.38, 1005.36, 1005.34, 1005.35, 1005.37, 1005.36, 1005.33, 1005.37, 1005.33, 1005.34, 1005.3, 1005.27, 1005.23, 1005.26, 1005.22, 1005.23, 1005.25, 1005.15, 1005.16, 1005.15, 1005.14, 1005.13, 1005.1, 1005.11, 1005.1, 1005.11, 1005.12, 1005.13, 1005.13, 1005.14, 1005.14, 1005.12, 1005.14, 1005.11, 1005.13, 1005.12, 1005.11, 1005.12, 1005.13, 1005.15, 1005.12, 1005.1, 1005.11, 1005.09, 1005.07, 1005.07, 1005.06, 1005.05, 1005.05, 1005.03, 1005.03, 1005.02, 1005.01, 1005.01, 1005.01, 1005.0, 1005.0, 1005.02, 1005.01, 1005.01, 1004.98, 1004.97, 1004.95, 1004.96, 1004.95, 1004.95, 1004.95, 1004.94, 1004.96, 1004.97, 1004.99, 1005.0, 1004.99, 1004.99, 1005.0, 1005.01, 1004.99, 1004.99, 1004.98, 1004.99, 1004.98, 1004.99, 1005.0, 1005.02, 1005.02, 1005.05, 1005.06, 1005.04, 1005.04, 1005.01, 1005.0, 1004.99, 1004.96, 1004.95, 1004.93, 1004.92, 1004.91, 1004.92, 1004.96, 1004.97, 1004.98, 1004.99, 1005.01, 1005.04, 1005.02, 1005.01, 1005.03, 1005.03, 1004.98, 1004.96, 1004.98, 1005.0, 1005.0, 1005.0, 1004.99, 1005.01, 1005.04, 1005.04, 1005.04, 1005.05, 1005.04, 1005.04, 1005.03, 1005.03];
+const GAS    = [4.3, 25.41, 46.35, 61.76, 73.36, 86.17, 93.62, 96.7, 103.15, 104.81, 107.9, 109.86, 113.03, 112.57, 118.84, 121.49, 122.28, 119.17, 123.63, 127.94, 132.98, 132.35, 131.12, 133.61, 136.64, 132.04, 136.2, 135.43, 135.98, 133.82, 136.2, 135.32, 137.31, 133.93, 140.74, 140.16, 137.87, 144.11, 145.35, 138.55, 144.48, 139.0, 140.62, 143.01, 140.27, 142.16, 147.12, 142.16, 137.08, 131.02, 142.16, 144.73, 145.98, 144.23, 136.09, 141.21, 144.23, 143.86, 144.48, 147.38, 148.94, 146.87, 150.27, 149.2, 149.73, 151.35, 148.81, 149.2, 150.8, 154.67, 153.13, 152.3, 152.3, 152.71, 153.69, 150.54, 151.62, 153.55, 151.07, 149.6, 151.07, 150.54, 148.16, 151.35, 151.07, 152.16, 151.48, 152.85, 149.47, 152.3, 152.44, 152.85, 148.55, 149.87, 149.87, 149.87, 148.94, 151.35, 150.27, 150.67, 146.61, 148.94, 147.51, 149.34, 147.38, 148.81, 149.6, 149.6, 147.77, 148.94, 149.73, 151.35, 148.94, 146.74, 146.23, 146.61, 145.85, 145.1, 146.99, 144.73, 142.16, 144.48, 145.1, 145.35, 143.62, 144.73, 145.1];
+const SATS   = [0.0, 8.0, 15.0, 15.0, 14.0, 15.0, 16.0, 17.0, 17.0, 17.0, 17.0, 17.0, 17.0, 17.0, 18.0, 18.0, 18.0, 18.0, 18.0, 18.0, 18.0, 18.0, 19.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 19.0, 19.0, 19.0, 19.0, 20.0, 20.0, 20.0, 20.0, 21.0, 21.0, 20.0, 20.0, 20.0, 20.0, 20.0, 19.0, 20.0, 20.0, 20.0, 20.0, 19.0, 18.0, 20.0, 20.0, 20.0, 20.0, 20.0, 19.0, 20.0, 20.0, 21.0, 21.0, 20.0, 20.0, 20.0, 19.0, 21.0, 20.0, 20.0, 20.0, 20.0, 19.0, 20.0, 19.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 19.0, 20.0, 20.0, 19.0, 20.0, 19.0, 19.0, 20.0, 20.0, 18.0, 20.0, 20.0, 19.0, 20.0, 19.0, 19.0, 19.0, 20.0, 19.0, 20.0, 20.0, 19.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 19.0, 19.0, 19.0, 21.0, 19.0, 19.0, 20.0];
+const HDOP   = [10.0, 3.7, 0.9, 0.9, 1.0, 0.9, 0.8, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.7, 0.6, 0.6, 0.6, 0.6, 0.7, 0.7, 0.6, 0.6, 0.6, 0.6, 0.6, 0.7, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.7, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.7, 0.6, 0.6, 0.7, 0.6, 0.7, 0.7, 0.7, 0.6, 0.7, 0.6, 0.6, 0.7, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.7, 0.7, 0.6, 0.6, 0.7, 0.6];
+const W_AVG  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+const W_GUST = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+const RAIN   = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+const A20    = [0.5619, 0.5634, 0.574, 0.5719, 0.5716, 0.5775, 0.573, 0.5723, 0.5739, 0.5716, 0.5723, 0.5713, 0.5732, 0.5716, 0.5745, 0.5764, 0.5742, 0.5703, 0.575, 0.5743, 0.5746, 0.5731, 0.5694, 0.5724, 0.5723, 0.57, 0.5691, 0.5695, 0.5682, 0.5658, 0.5694, 0.5689, 0.5682, 0.5662, 0.5697, 0.5682, 0.5674, 0.5698, 0.5698, 0.5672, 0.5692, 0.5654, 0.5658, 0.5666, 0.5662, 0.5637, 0.565, 0.5616, 0.5602, 0.5599, 0.5606, 0.5607, 0.56, 0.5575, 0.555, 0.5534, 0.5547, 0.5533, 0.5514, 0.5499, 0.5494, 0.5485, 0.5482, 0.5462, 0.5453, 0.5453, 0.5433, 0.5434, 0.5426, 0.5423, 0.5427, 0.542, 0.5405, 0.5405, 0.5396, 0.539, 0.538, 0.5372, 0.5367, 0.5358, 0.5344, 0.5333, 0.5321, 0.5328, 0.5335, 0.5331, 0.5321, 0.5308, 0.5307, 0.5299, 0.5301, 0.5304, 0.5306, 0.5292, 0.5288, 0.5275, 0.5275, 0.5277, 0.5269, 0.526, 0.5246, 0.5233, 0.5228, 0.5222, 0.5208, 0.5198, 0.5191, 0.5195, 0.518, 0.517, 0.5166, 0.5204, 0.5215, 0.5202, 0.5178, 0.5154, 0.5139, 0.5124, 0.5114, 0.5105, 0.5079, 0.5063, 0.5069, 0.5067, 0.5057, 0.5044, 0.5042];
+const A40    = [1.26, 1.2703, 1.2436, 1.2647, 1.2652, 1.2339, 1.2213, 1.2396, 1.2291, 1.2462, 1.2442, 1.2511, 1.2458, 1.2587, 1.2373, 1.2362, 1.2341, 1.2541, 1.2421, 1.2223, 1.1939, 1.1966, 1.2143, 1.2032, 1.1919, 1.2068, 1.1963, 1.1969, 1.198, 1.2004, 1.191, 1.1902, 1.1839, 1.2016, 1.1828, 1.1846, 1.1947, 1.1725, 1.1718, 1.1907, 1.1699, 1.1839, 1.1764, 1.1737, 1.171, 1.1693, 1.1564, 1.1612, 1.1616, 1.1603, 1.1505, 1.1434, 1.1389, 1.1413, 1.1436, 1.1382, 1.1278, 1.1238, 1.1128, 1.1031, 1.0929, 1.086, 1.0833, 1.0777, 1.0746, 1.0737, 1.0711, 1.0682, 1.0622, 1.0628, 1.0648, 1.0607, 1.0515, 1.0566, 1.0558, 1.052, 1.05, 1.0455, 1.0434, 1.0425, 1.0409, 1.032, 1.0334, 1.0317, 1.0345, 1.0364, 1.0299, 1.0255, 1.023, 1.0247, 1.0253, 1.0263, 1.0265, 1.0246, 1.0209, 1.0175, 1.02, 1.0256, 1.0211, 1.0189, 1.0127, 1.0101, 1.0102, 1.01, 1.0068, 1.0044, 1.0025, 1.006, 0.9977, 0.9995, 0.9989, 1.0176, 1.0164, 1.0088, 1.0032, 0.9987, 0.9928, 0.992, 0.9884, 0.9844, 0.9781, 0.9753, 0.9824, 0.9819, 0.9793, 0.9753, 0.9752];
+const A55    = [1.6801, 1.6957, 1.6433, 1.679, 1.6801, 1.625, 1.6085, 1.6383, 1.6202, 1.6493, 1.6455, 1.6575, 1.6474, 1.6695, 1.6329, 1.6296, 1.628, 1.6632, 1.6401, 1.6093, 1.5648, 1.5699, 1.6003, 1.5808, 1.5633, 1.5881, 1.5723, 1.5731, 1.5757, 1.5812, 1.564, 1.563, 1.5538, 1.5827, 1.5511, 1.5549, 1.5712, 1.5352, 1.5341, 1.565, 1.5316, 1.5559, 1.5439, 1.5393, 1.5353, 1.5344, 1.5139, 1.5235, 1.525, 1.5232, 1.5078, 1.4969, 1.4906, 1.4958, 1.501, 1.4937, 1.4771, 1.472, 1.4567, 1.4431, 1.4282, 1.4186, 1.4148, 1.4077, 1.4036, 1.4024, 1.3997, 1.3953, 1.3871, 1.388, 1.3907, 1.3852, 1.3726, 1.38, 1.3793, 1.3741, 1.3717, 1.3656, 1.3629, 1.362, 1.3604, 1.3482, 1.3507, 1.3479, 1.3516, 1.3546, 1.3457, 1.3399, 1.3364, 1.3393, 1.3401, 1.3413, 1.3416, 1.3395, 1.3344, 1.3301, 1.3338, 1.3417, 1.3357, 1.3329, 1.3248, 1.3217, 1.3221, 1.322, 1.3183, 1.3152, 1.3129, 1.3177, 1.3065, 1.3095, 1.3089, 1.3339, 1.3316, 1.3213, 1.3145, 1.3092, 1.3016, 1.3011, 1.2964, 1.2911, 1.2835, 1.2802, 1.2901, 1.2895, 1.2862, 1.2812, 1.2811];
+const A80    = [2.3748, 2.3957, 2.3183, 2.368, 2.3698, 2.2922, 2.272, 2.3124, 2.2873, 2.3277, 2.3222, 2.339, 2.3243, 2.3552, 2.3041, 2.2989, 2.2978, 2.3473, 2.3137, 2.2726, 2.2135, 2.2209, 2.2627, 2.2355, 2.2125, 2.2461, 2.2256, 2.2265, 2.2305, 2.2388, 2.2145, 2.2134, 2.2015, 2.2405, 2.1974, 2.203, 2.2248, 2.1766, 2.1752, 2.2167, 2.1721, 2.2053, 2.1894, 2.183, 2.178, 2.1777, 2.1505, 2.1642, 2.1667, 2.1645, 2.1441, 2.1299, 2.122, 2.1297, 2.1372, 2.1283, 2.1063, 2.1002, 2.0811, 2.0641, 2.0453, 2.0333, 2.0286, 2.0202, 2.0153, 2.0137, 2.0108, 2.0052, 1.9951, 1.9964, 1.9996, 1.9929, 1.9774, 1.9867, 1.9861, 1.9797, 1.977, 1.9695, 1.9662, 1.9653, 1.9636, 1.9486, 1.9521, 1.9484, 1.9528, 1.9566, 1.9458, 1.9389, 1.9345, 1.9383, 1.9393, 1.9407, 1.941, 1.9388, 1.9326, 1.9275, 1.9321, 1.9419, 1.9346, 1.9313, 1.9216, 1.9179, 1.9186, 1.9186, 1.9143, 1.9106, 1.9079, 1.9139, 1.9003, 1.9042, 1.9035, 1.9339, 1.9308, 1.9182, 1.9102, 1.9042, 1.8951, 1.8948, 1.8892, 1.8828, 1.8739, 1.8702, 1.8823, 1.8816, 1.8777, 1.8718, 1.8717];
+const A110   = [3.3683, 3.3924, 3.301, 3.3588, 3.3609, 3.2706, 3.2479, 3.2943, 3.2653, 3.3121, 3.3056, 3.3253, 3.308, 3.344, 3.2846, 3.2785, 3.2774, 3.3351, 3.2957, 3.2485, 3.1811, 3.1896, 3.2377, 3.2062, 3.18, 3.2186, 3.1953, 3.1963, 3.2009, 3.2106, 3.1826, 3.1813, 3.1679, 3.2125, 3.1631, 3.1696, 3.1945, 3.1395, 3.1379, 3.1852, 3.1344, 3.1724, 3.1543, 3.147, 3.1413, 3.1412, 3.1103, 3.126, 3.1289, 3.1265, 3.1033, 3.0873, 3.0785, 3.0872, 3.0958, 3.0859, 3.061, 3.0542, 3.0327, 3.0138, 2.9926, 2.9793, 2.9741, 2.9648, 2.9593, 2.9576, 2.9543, 2.9481, 2.9369, 2.9384, 2.942, 2.9345, 2.9173, 2.9276, 2.9269, 2.9198, 2.9168, 2.9085, 2.9048, 2.9038, 2.902, 2.8854, 2.8892, 2.8851, 2.89, 2.8942, 2.8822, 2.8746, 2.8698, 2.8739, 2.875, 2.8766, 2.8769, 2.8744, 2.8676, 2.862, 2.8671, 2.8779, 2.8699, 2.8662, 2.8554, 2.8514, 2.8521, 2.8521, 2.8472, 2.8432, 2.8402, 2.8468, 2.8317, 2.8361, 2.8353, 2.8689, 2.8655, 2.8516, 2.8427, 2.8361, 2.8259, 2.8256, 2.8194, 2.8123, 2.8024, 2.7983, 2.8117, 2.8109, 2.8066, 2.8, 2.7999];
+const NA20   = [0.7872, 0.8076, 0.9523, 0.9236, 0.9195, 1.0, 0.9386, 0.9291, 0.9509, 0.9195, 0.9291, 0.9154, 0.9413, 0.9195, 0.9591, 0.985, 0.955, 0.9018, 0.9659, 0.9563, 0.9604, 0.94, 0.8895, 0.9304, 0.9291, 0.8977, 0.8854, 0.8909, 0.8731, 0.8404, 0.8895, 0.8827, 0.8731, 0.8458, 0.8936, 0.8731, 0.8622, 0.895, 0.895, 0.8595, 0.8868, 0.8349, 0.8404, 0.8513, 0.8458, 0.8117, 0.8295, 0.7831, 0.764, 0.7599, 0.7694, 0.7708, 0.7613, 0.7271, 0.693, 0.6712, 0.6889, 0.6698, 0.6439, 0.6235, 0.6166, 0.6044, 0.6003, 0.573, 0.5607, 0.5607, 0.5334, 0.5348, 0.5239, 0.5198, 0.5252, 0.5157, 0.4952, 0.4952, 0.4829, 0.4748, 0.4611, 0.4502, 0.4434, 0.4311, 0.412, 0.397, 0.3806, 0.3902, 0.3997, 0.3943, 0.3806, 0.3629, 0.3615, 0.3506, 0.3533, 0.3574, 0.3602, 0.3411, 0.3356, 0.3179, 0.3179, 0.3206, 0.3097, 0.2974, 0.2783, 0.2606, 0.2538, 0.2456, 0.2265, 0.2128, 0.2033, 0.2087, 0.1883, 0.1746, 0.1692, 0.221, 0.236, 0.2183, 0.1855, 0.1528, 0.1323, 0.1119, 0.0982, 0.0859, 0.0505, 0.0286, 0.0368, 0.0341, 0.0205, 0.0027, 0.0];
+const NA40   = [0.9651, 1.0, 0.9095, 0.981, 0.9827, 0.8767, 0.834, 0.896, 0.8604, 0.9183, 0.9116, 0.9349, 0.917, 0.9607, 0.8882, 0.8844, 0.8773, 0.9451, 0.9044, 0.8373, 0.7411, 0.7503, 0.8102, 0.7726, 0.7343, 0.7848, 0.7492, 0.7513, 0.755, 0.7631, 0.7313, 0.7286, 0.7072, 0.7672, 0.7035, 0.7096, 0.7438, 0.6686, 0.6662, 0.7303, 0.6598, 0.7072, 0.6818, 0.6727, 0.6635, 0.6577, 0.614, 0.6303, 0.6317, 0.6272, 0.594, 0.57, 0.5547, 0.5629, 0.5707, 0.5524, 0.5171, 0.5036, 0.4663, 0.4334, 0.3988, 0.3755, 0.3663, 0.3473, 0.3368, 0.3338, 0.325, 0.3151, 0.2948, 0.2968, 0.3036, 0.2897, 0.2586, 0.2758, 0.2731, 0.2603, 0.2535, 0.2382, 0.2311, 0.2281, 0.2226, 0.1925, 0.1972, 0.1915, 0.2009, 0.2074, 0.1854, 0.1705, 0.162, 0.1677, 0.1698, 0.1732, 0.1738, 0.1674, 0.1549, 0.1433, 0.1518, 0.1708, 0.1555, 0.1481, 0.1271, 0.1183, 0.1186, 0.1179, 0.1071, 0.0989, 0.0925, 0.1044, 0.0762, 0.0823, 0.0803, 0.1437, 0.1396, 0.1139, 0.0949, 0.0796, 0.0596, 0.0569, 0.0447, 0.0312, 0.0098, 0.0003, 0.0244, 0.0227, 0.0139, 0.0003, 0.0];
+const NA55   = [0.9625, 1.0, 0.8739, 0.9598, 0.9625, 0.8298, 0.7901, 0.8619, 0.8183, 0.8883, 0.8792, 0.9081, 0.8838, 0.9369, 0.8489, 0.8409, 0.8371, 0.9218, 0.8662, 0.7921, 0.685, 0.6972, 0.7704, 0.7235, 0.6813, 0.741, 0.703, 0.7049, 0.7112, 0.7244, 0.683, 0.6806, 0.6585, 0.728, 0.652, 0.6611, 0.7004, 0.6137, 0.6111, 0.6854, 0.6051, 0.6635, 0.6347, 0.6236, 0.614, 0.6118, 0.5625, 0.5856, 0.5892, 0.5848, 0.5478, 0.5215, 0.5064, 0.5189, 0.5314, 0.5138, 0.4739, 0.4616, 0.4248, 0.3921, 0.3562, 0.3331, 0.3239, 0.3069, 0.297, 0.2941, 0.2876, 0.277, 0.2573, 0.2594, 0.2659, 0.2527, 0.2224, 0.2402, 0.2385, 0.226, 0.2202, 0.2055, 0.199, 0.1969, 0.193, 0.1637, 0.1697, 0.1629, 0.1718, 0.1791, 0.1576, 0.1437, 0.1353, 0.1422, 0.1442, 0.1471, 0.1478, 0.1427, 0.1304, 0.1201, 0.129, 0.148, 0.1336, 0.1268, 0.1073, 0.0999, 0.1008, 0.1006, 0.0917, 0.0842, 0.0787, 0.0903, 0.0633, 0.0705, 0.0691, 0.1292, 0.1237, 0.0989, 0.0826, 0.0698, 0.0515, 0.0503, 0.039, 0.0262, 0.0079, 0.0, 0.0238, 0.0224, 0.0144, 0.0024, 0.0022];
+const NA80   = [0.9602, 1.0, 0.8527, 0.9473, 0.9507, 0.803, 0.7646, 0.8415, 0.7937, 0.8706, 0.8601, 0.8921, 0.8641, 0.9229, 0.8257, 0.8158, 0.8137, 0.9079, 0.844, 0.7657, 0.6533, 0.6674, 0.7469, 0.6951, 0.6514, 0.7153, 0.6763, 0.678, 0.6856, 0.7014, 0.6552, 0.6531, 0.6304, 0.7047, 0.6226, 0.6333, 0.6748, 0.5831, 0.5804, 0.6594, 0.5745, 0.6377, 0.6074, 0.5952, 0.5857, 0.5852, 0.5334, 0.5595, 0.5642, 0.56, 0.5212, 0.4942, 0.4792, 0.4938, 0.5081, 0.4912, 0.4493, 0.4377, 0.4013, 0.369, 0.3332, 0.3104, 0.3014, 0.2854, 0.2761, 0.2731, 0.2676, 0.2569, 0.2377, 0.2402, 0.2462, 0.2335, 0.204, 0.2217, 0.2206, 0.2084, 0.2032, 0.189, 0.1827, 0.181, 0.1777, 0.1492, 0.1559, 0.1488, 0.1572, 0.1644, 0.1439, 0.1307, 0.1224, 0.1296, 0.1315, 0.1342, 0.1347, 0.1305, 0.1187, 0.109, 0.1178, 0.1364, 0.1225, 0.1163, 0.0978, 0.0908, 0.0921, 0.0921, 0.0839, 0.0769, 0.0717, 0.0832, 0.0573, 0.0647, 0.0634, 0.1212, 0.1153, 0.0913, 0.0761, 0.0647, 0.0474, 0.0468, 0.0362, 0.024, 0.007, 0.0, 0.023, 0.0217, 0.0143, 0.003, 0.0029];
+const NA110  = [0.9594, 1.0, 0.8462, 0.9434, 0.947, 0.795, 0.7568, 0.8349, 0.7861, 0.8648, 0.8539, 0.8871, 0.8579, 0.9185, 0.8185, 0.8083, 0.8064, 0.9036, 0.8372, 0.7578, 0.6443, 0.6586, 0.7396, 0.6866, 0.6425, 0.7075, 0.6682, 0.6699, 0.6777, 0.694, 0.6469, 0.6447, 0.6221, 0.6972, 0.614, 0.625, 0.6669, 0.5743, 0.5716, 0.6512, 0.5657, 0.6297, 0.5992, 0.5869, 0.5773, 0.5772, 0.5252, 0.5516, 0.5565, 0.5524, 0.5134, 0.4865, 0.4716, 0.4863, 0.5008, 0.4841, 0.4422, 0.4307, 0.3945, 0.3627, 0.327, 0.3047, 0.2959, 0.2803, 0.271, 0.2681, 0.2626, 0.2521, 0.2333, 0.2358, 0.2419, 0.2293, 0.2003, 0.2176, 0.2165, 0.2045, 0.1995, 0.1855, 0.1793, 0.1776, 0.1745, 0.1466, 0.153, 0.1461, 0.1544, 0.1614, 0.1412, 0.1284, 0.1204, 0.1273, 0.1291, 0.1318, 0.1323, 0.1281, 0.1166, 0.1072, 0.1158, 0.134, 0.1205, 0.1143, 0.0961, 0.0894, 0.0906, 0.0906, 0.0823, 0.0756, 0.0705, 0.0816, 0.0562, 0.0636, 0.0623, 0.1188, 0.1131, 0.0897, 0.0747, 0.0636, 0.0465, 0.046, 0.0355, 0.0236, 0.0069, 0.0, 0.0226, 0.0212, 0.014, 0.0029, 0.0027];
+const WINDROSE_VALS = [1, 0, 1, 0, 0, 0, 3797, 1];
+const WINDROSE_DIRS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+
+Chart.defaults.color = '#8b949e';
+Chart.defaults.borderColor = '#21262d';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+const baseOpts = {
+  responsive: true,
+  maintainAspectRatio: true,
+  animation: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: '#161b22',
+      borderColor: '#21262d',
+      borderWidth: 1,
+      titleColor: '#e6edf3',
+      bodyColor: '#8b949e',
+    }
+  },
+  scales: {
+    x: {
+      ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8, font: { family: "'Space Mono'" , size: 9 } },
+      grid: { color: '#21262d' }
+    },
+    y: {
+      ticks: { font: { family: "'Space Mono'", size: 9 } },
+      grid: { color: '#21262d' }
+    }
+  }
+};
+
+function lineDs(label, data, color, fill=false, dashed=false) {
+  return {
+    label, data,
+    borderColor: color,
+    backgroundColor: fill ? color.replace(')', ',0.12)').replace('rgb','rgba') : 'transparent',
+    borderWidth: 1.5,
+    pointRadius: 0,
+    fill: fill,
+    tension: 0.3,
+    borderDash: dashed ? [4,3] : []
+  };
+}
+
+// Temp + Taupunkt
+new Chart(document.getElementById('chartTempDew'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [
+    lineDs('Temp °C', TEMP, '#ffa657', true),
+    lineDs('Taupunkt °C', DEW, '#d2a8ff')
+  ]},
+  options: { ...baseOpts, plugins: { ...baseOpts.plugins,
+    legend: { display: true, labels: { color: '#8b949e', font: { size: 10 } } }
+  } }
+});
+
+// Feuchte
+new Chart(document.getElementById('chartHum'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [ lineDs('Feuchte %', HUM, '#58a6ff', true) ]},
+  options: baseOpts
+});
+
+// Gas
+new Chart(document.getElementById('chartGas'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [ lineDs('Gas kΩ', GAS, '#3fb950', true) ]},
+  options: baseOpts
+});
+
+// Druck
+new Chart(document.getElementById('chartPres'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [ lineDs('Druck hPa', PRES, '#d2a8ff', true) ]},
+  options: baseOpts
+});
+
+// Ultraschall Einzelkanäle
+const usColors = ['#58a6ff','#3fb950','#d2a8ff','#ffa657','#f78166'];
+const usSets = [
+  [A20,'chartUS20'],
+  [A40,'chartUS40'],
+  [A55,'chartUS55'],
+  [A80,'chartUS80'],
+  [A110,'chartUS110']
+];
+usSets.forEach(([dat, id], i) => {
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: { labels: LABELS, datasets: [ lineDs('dB/m', dat, usColors[i], true) ]},
+    options: baseOpts
+  });
+});
+
+// Ultraschall normiert
+new Chart(document.getElementById('chartUSNorm'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [
+    lineDs('20k Low', NA20, '#58a6ff'),
+    lineDs('40k Mid', NA40, '#3fb950'),
+    lineDs('55k High', NA55, '#d2a8ff'),
+    lineDs('80k FM', NA80, '#ffa657'),
+    lineDs('110k CF', NA110, '#f78166'),
+  ]},
+  options: { ...baseOpts,
+    plugins: { ...baseOpts.plugins,
+      legend: { display: true, labels: { color: '#8b949e', font: { size: 10 } } }
+    },
+    scales: { ...baseOpts.scales,
+      y: { ...baseOpts.scales.y, min: 0, max: 1 }
+    }
+  }
+});
+
+// GPS Sats
+new Chart(document.getElementById('chartSats'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [ lineDs('Sats', SATS, '#3fb950', true) ]},
+  options: baseOpts
+});
+
+// HDOP
+new Chart(document.getElementById('chartHDOP'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [ lineDs('HDOP', HDOP, '#f78166', true) ]},
+  options: baseOpts
+});
+
+// Wind
+new Chart(document.getElementById('chartWind'), {
+  type: 'line',
+  data: { labels: LABELS, datasets: [
+    lineDs('Wind Ø m/s', W_AVG, '#58a6ff', true),
+    lineDs('Böe m/s', W_GUST, '#ffa657', false, true),
+  ]},
+  options: { ...baseOpts, plugins: { ...baseOpts.plugins,
+    legend: { display: true, labels: { color: '#8b949e', font: { size: 10 } } }
+  } }
+});
+
+// Windrose
+new Chart(document.getElementById('chartWindrose'), {
+  type: 'polarArea',
+  data: {
+    labels: WINDROSE_DIRS,
+    datasets: [{
+      data: WINDROSE_VALS,
+      backgroundColor: [
+        'rgba(88,166,255,0.6)','rgba(63,185,80,0.6)','rgba(210,168,255,0.6)',
+        'rgba(255,166,87,0.6)','rgba(247,129,102,0.6)','rgba(88,166,255,0.4)',
+        'rgba(63,185,80,0.4)','rgba(210,168,255,0.4)'
+      ],
+      borderColor: '#21262d',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    animation: false,
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { color: '#8b949e', font: { size: 9 }, boxWidth: 10 } },
+      tooltip: { backgroundColor: '#161b22', borderColor: '#21262d', borderWidth: 1, titleColor: '#e6edf3', bodyColor: '#8b949e' }
+    },
+    scales: {
+      r: {
+        ticks: { font: { family: "'Space Mono'", size: 8 }, color: '#8b949e', backdropColor: 'transparent' },
+        grid: { color: '#21262d' },
+        pointLabels: { font: { size: 9 }, color: '#8b949e' }
+      }
+    }
+  }
+});
+
+// Regen kumulativ
+new Chart(document.getElementById('chartRain'), {
+  type: 'bar',
+  data: { labels: LABELS, datasets: [{
+    label: 'Regen kumulativ mm',
+    data: RAIN,
+    backgroundColor: 'rgba(88,166,255,0.4)',
+    borderColor: '#58a6ff',
+    borderWidth: 1,
+    borderRadius: 2
+  }]},
+  options: { ...baseOpts,
+    scales: { ...baseOpts.scales, y: { ...baseOpts.scales.y, min: 0 } }
+  }
+});
+</script>
+
+</body>
+</html>
