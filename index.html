@@ -2,272 +2,301 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NEXUS / LOG · Citizen Science Bio-Akustik</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0d1117;--surface:#161b22;--border:#21262d;
   --accent:#58a6ff;--accent2:#3fb950;--accent3:#f78166;
-  --accent4:#d2a8ff;--accent5:#ffa657;
-  --muted:#8b949e;--text:#e6edf3;
+  --accent4:#d2a8ff;--accent5:#ffa657;--muted:#8b949e;--text:#e6edf3;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;padding:24px}
-.mono{font-family:'Space Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
 
 /* HEADER */
-.site-header{max-width:1400px;margin:0 auto 32px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.logo-block .logo{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;letter-spacing:-1px}
-.logo-block .logo span{color:var(--accent)}
-.logo-block .tagline{font-size:13px;color:var(--muted);margin-top:4px}
-.hardware-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.badge{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:11px;font-family:'Space Mono',monospace;color:var(--muted)}
-.header-right{text-align:right}
-.header-right h2{font-size:15px;font-weight:600;color:var(--text)}
-.header-right p{font-size:12px;color:var(--muted);margin-top:4px}
+.site-header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:1.4rem 2rem;display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.site-logo{font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--accent);letter-spacing:-0.03em}
+.site-logo span{color:var(--muted);font-weight:400}
+.site-desc{font-size:0.8rem;color:var(--muted);line-height:1.6;margin-top:0.2rem}
+.site-desc strong{color:var(--text)}
+.hw-badges{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.6rem}
+.badge{font-family:'Space Mono',monospace;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:999px;
+  background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.25);color:var(--accent)}
+.badge.g{background:rgba(63,185,80,0.1);border-color:rgba(63,185,80,0.25);color:var(--accent2)}
+.badge.o{background:rgba(255,166,87,0.1);border-color:rgba(255,166,87,0.25);color:var(--accent5)}
+.badge.p{background:rgba(210,168,255,0.1);border-color:rgba(210,168,255,0.25);color:var(--accent4)}
 
-/* SECTION LABELS */
-.section-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;margin-bottom:12px;padding-left:2px;max-width:1400px;margin-left:auto;margin-right:auto}
+/* MAIN */
+.main{padding:2rem;max-width:1400px;margin:0 auto}
+.section-heading{
+  font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);
+  letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.25rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.section-heading::before{content:'▸';color:var(--accent)}
+.section-heading::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* SESSION GRID */
-.session-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;max-width:1400px;margin:0 auto 40px}
+.sessions{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem}
 
 /* SESSION CARD */
-.session-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .2s,transform .15s}
+.session-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;transition:border-color 0.2s,transform 0.2s;
+  display:flex;flex-direction:column;
+}
 .session-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.session-card.coming{opacity:.45;pointer-events:none;cursor:default}
-.session-card a{text-decoration:none;color:inherit;display:block}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-.card-date{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--text)}
-.card-time{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
-.card-mode{font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;padding:2px 8px;font-weight:600}
-.mode-mobil{background:rgba(88,166,255,.15);color:var(--accent);border:1px solid rgba(88,166,255,.3)}
-.mode-stat{background:rgba(63,185,80,.15);color:var(--accent2);border:1px solid rgba(63,185,80,.3)}
-.mode-coming{background:rgba(139,148,158,.1);color:var(--muted);border:1px solid var(--border)}
+.session-card.coming{border-style:dashed;opacity:0.6}
 
-.card-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:12px}
+.card-head{padding:1rem 1.1rem 0.8rem;border-bottom:1px solid var(--border)}
+.card-date{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--text)}
+.card-time{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--muted);margin-top:0.1rem}
+.card-tags{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.5rem}
+.tag{font-size:0.65rem;padding:0.15rem 0.45rem;border-radius:6px;background:var(--border);color:var(--muted)}
+.tag.blue{background:rgba(88,166,255,0.12);color:var(--accent)}
+.tag.green{background:rgba(63,185,80,0.12);color:var(--accent2)}
+.tag.orange{background:rgba(255,166,87,0.12);color:var(--accent5)}
+.card-name{font-size:0.82rem;font-weight:600;color:var(--text);margin-top:0.45rem}
+.card-name-en{font-size:0.72rem;color:var(--muted)}
 
-/* WEATHER CHIPS */
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.chip{display:flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;font-family:'Space Mono',monospace}
-.chip .icon{font-size:13px}
+/* weather chips */
+.chips{display:flex;flex-wrap:wrap;gap:0.3rem;padding:0.7rem 1.1rem;border-bottom:1px solid var(--border)}
+.chip{font-size:0.7rem;padding:0.2rem 0.5rem;border-radius:6px;background:var(--border);color:var(--text)}
 
-/* MINI STATS */
-.mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-.mini-stat{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px}
-.mini-stat .k{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.mini-stat .v{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;margin-top:2px}
+/* kpi row */
+.card-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.ckpi{background:var(--surface);padding:0.55rem 0.75rem;text-align:center}
+.ckpi-label{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.ckpi-val{font-family:'Space Mono',monospace;font-size:0.85rem;font-weight:700;color:var(--text);margin-top:0.15rem}
 
-/* US BAR CHART */
-.us-bars{margin-bottom:14px}
-.us-bar-label{font-size:10px;color:var(--muted);margin-bottom:6px;font-family:'Space Mono',monospace}
-.us-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.us-bar-name{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);width:56px;flex-shrink:0}
-.us-bar-track{flex:1;background:var(--bg);border-radius:3px;height:7px;overflow:hidden}
-.us-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
-.us-bar-val{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);width:68px;text-align:right;flex-shrink:0}
+/* ultrasound bars */
+.card-us{padding:0.75rem 1.1rem;border-top:1px solid var(--border)}
+.us-label{font-size:0.62rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.45rem}
+.us-row{display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem}
+.us-key{font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--muted);width:3.5rem}
+.us-track{flex:1;background:var(--border);border-radius:3px;height:5px}
+.us-fill{height:5px;border-radius:3px}
+.us-num{font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--muted);width:5.5rem;text-align:right}
 
-/* CARD FOOTER */
-.card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:10px;margin-top:4px}
-.card-pts{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted)}
-.card-link{font-size:11px;color:var(--accent);font-weight:500}
-.session-card:hover .card-link{text-decoration:underline}
+/* card footer */
+.card-foot{
+  padding:0.6rem 1.1rem;margin-top:auto;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--border);
+}
+.card-meta{font-size:0.65rem;color:var(--muted);font-family:'Space Mono',monospace}
+.card-link{
+  font-family:'Space Mono',monospace;font-size:0.68rem;
+  color:var(--accent);text-decoration:none;padding:0.25rem 0.7rem;
+  border:1px solid rgba(88,166,255,0.3);border-radius:6px;
+  background:rgba(88,166,255,0.08);transition:background 0.15s;
+}
+.card-link:hover{background:rgba(88,166,255,0.18)}
+.card-link.dim{color:var(--muted);border-color:var(--border);background:transparent;cursor:default}
 
 /* FOOTER */
-.site-footer{max-width:1400px;margin:0 auto;text-align:center;font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;padding:16px;border-top:1px solid var(--border)}
+.site-footer{
+  margin-top:3rem;padding:1rem 2rem;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;
+  font-size:0.65rem;color:var(--muted);font-family:'Space Mono',monospace;
+}
+.site-footer a{color:var(--accent);text-decoration:none}
+.site-footer a:hover{text-decoration:underline}
+
+@media(max-width:600px){
+  .sessions{grid-template-columns:1fr}
+  .site-header{flex-direction:column}
+}
 </style>
 </head>
 <body>
 
-<!-- SITE HEADER -->
-<div class="site-header">
-  <div class="logo-block">
-    <div class="logo">NEXUS<span>/</span>LOG</div>
-    <div class="tagline">Citizen Science Bio-Akustik · Fledermäuse &amp; Ultraschall · Paderborn, NRW
-      <br>Bat &amp; Bio-Acoustics Citizen Science · Paderborn, NRW</div>
-    <div class="hardware-badges">
+<!-- ═══ SITE HEADER ═══ -->
+<header class="site-header">
+  <div>
+    <div class="site-logo">NEXUS<span>/LOG</span></div>
+    <div class="site-desc">
+      Citizen Science Bio-Akustik · Fledermäuse &amp; Ultraschall · Geschütztes Habitat<br>
+      <span>Bat &amp; Bio-Acoustics Citizen Science · Protected Habitat</span>
+    </div>
+    <div class="hw-badges">
       <span class="badge">SEEED XIAO ESP32S3</span>
-      <span class="badge">BME680</span>
-      <span class="badge">AIR530 GPS</span>
-      <span class="badge">SEN-15901</span>
+      <span class="badge g">BME680</span>
+      <span class="badge g">AIR530 GPS</span>
+      <span class="badge o">SEN-15901</span>
     </div>
   </div>
-  <div class="header-right">
-    <h2>Field Log · Messdaten-Archiv</h2>
-    <p>Alle Messsessions · All measurement sessions</p>
-  </div>
-</div>
+</header>
 
-<!-- SESSIONS -->
-<div class="section-label">Messsessions · Sessions</div>
-<div class="session-grid">
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+  <div class="section-heading">Field Log · Messdaten-Archiv &nbsp;·&nbsp; Alle Messsessions · All measurement sessions</div>
 
-  <!-- ── SESSION 3 – NEU ── 07.03.2026 ── -->
-  <div class="session-card">
-    <a href="07-03-26-2.html">
-      <div class="card-header">
-        <div>
-          <div class="card-date">07. März 2026</div>
-          <div class="card-time">17:42 – 19:12 Uhr · 90 min 16 s</div>
+  <div class="sessions">
+
+    <!-- ── SESSION: 07.03.2026 ── -->
+    <div class="session-card">
+      <div class="card-head">
+        <div class="card-date">07. März 2026</div>
+        <div class="card-time">17:42 – 19:12 Uhr · 90 min 16 s</div>
+        <div class="card-tags">
+          <span class="tag blue">Stationär</span>
+          <span class="tag">Session 2</span>
         </div>
-        <span class="card-mode mode-stat">Stationär</span>
+        <div class="card-name">Abendsession</div>
+        <div class="card-name-en">Evening Session</div>
       </div>
-      <div class="card-title">Abendsession · Evening Session</div>
       <div class="chips">
-        <span class="chip"><span class="icon">🌡️</span> 10.6–15.1 °C</span>
-        <span class="chip"><span class="icon">💧</span> 52–73 %</span>
-        <span class="chip"><span class="icon">🌬️</span> windstill</span>
-        <span class="chip"><span class="icon">☀️</span> heiter</span>
-        <span class="chip"><span class="icon">🛰️</span> 19 Sats</span>
+        <span class="chip">🌡️ 10.6–15.1 °C</span>
+        <span class="chip">💧 52–73 %</span>
+        <span class="chip">🌬️ windstill</span>
+        <span class="chip">☀️ heiter</span>
+        <span class="chip">🛰️ 19 Sats</span>
       </div>
-      <div class="mini-stats">
-        <div class="mini-stat"><div class="k">Druck</div><div class="v" style="color:var(--accent2)">1012.8 hPa</div></div>
-        <div class="mini-stat"><div class="k">Gas</div><div class="v" style="color:var(--accent5)">120.5 kΩ</div></div>
-        <div class="mini-stat"><div class="k">Punkte</div><div class="v" style="color:var(--accent)">2709</div></div>
+      <div class="card-kpis">
+        <div class="ckpi"><div class="ckpi-label">Druck</div><div class="ckpi-val">1012.8 hPa</div></div>
+        <div class="ckpi"><div class="ckpi-label">Gas</div><div class="ckpi-val">120.5 kΩ</div></div>
+        <div class="ckpi"><div class="ckpi-label">Punkte</div><div class="ckpi-val">2709</div></div>
       </div>
-      <div class="us-bars">
-        <div class="us-bar-label">Ultraschall-Kanäle (dB/m)</div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">20k Low</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:14%;background:var(--accent)"></div></div>
-          <span class="us-bar-val">0.5162 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">40k Mid</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:30%;background:var(--accent2)"></div></div>
-          <span class="us-bar-val">1.0827 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">55k High</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:40%;background:var(--accent5)"></div></div>
-          <span class="us-bar-val">1.4330 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">80k FM</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:57%;background:var(--accent3)"></div></div>
-          <span class="us-bar-val">2.0594 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">110k CF</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:83%;background:var(--accent4)"></div></div>
-          <span class="us-bar-val">3.0039 dB/m</span>
-        </div>
+      <div class="card-us">
+        <div class="us-label">Ultraschall-Kanäle (dB/m)</div>
+        <div class="us-row"><span class="us-key">20k Low</span><div class="us-track"><div class="us-fill" style="width:15%;background:#58a6ff"></div></div><span class="us-num">0.5162 dB/m</span></div>
+        <div class="us-row"><span class="us-key">40k Mid</span><div class="us-track"><div class="us-fill" style="width:30%;background:#3fb950"></div></div><span class="us-num">1.0827 dB/m</span></div>
+        <div class="us-row"><span class="us-key">55k High</span><div class="us-track"><div class="us-fill" style="width:40%;background:#d2a8ff"></div></div><span class="us-num">1.4330 dB/m</span></div>
+        <div class="us-row"><span class="us-key">80k FM</span><div class="us-track"><div class="us-fill" style="width:59%;background:#ffa657"></div></div><span class="us-num">2.0594 dB/m</span></div>
+        <div class="us-row"><span class="us-key">110k CF</span><div class="us-track"><div class="us-fill" style="width:88%;background:#f78166"></div></div><span class="us-num">3.0039 dB/m</span></div>
       </div>
-      <div class="card-footer">
-        <span class="card-pts">2709 Datenpunkte · 2 s Intervall · GPS Fix 99.4 %</span>
-        <span class="card-link">Dashboard →</span>
+      <div class="card-foot">
+        <span class="card-meta">2709 Datenpunkte · 2 s · GPS Fix 99.4 %</span>
+        <a class="card-link" href="07-03-26-2.html">Dashboard →</a>
       </div>
-    </a>
-  </div>
+    </div>
 
-  <!-- ── SESSION 2 – 23.02.2026 ── -->
-  <div class="session-card">
-    <a href="26-02-23-1.html">
-      <div class="card-header">
-        <div>
-          <div class="card-date">23. Februar 2026</div>
-          <div class="card-time">Session 2</div>
+    <!-- ── SESSION: 05.03.2026 (NEU) ── -->
+    <div class="session-card">
+      <div class="card-head">
+        <div class="card-date">05. März 2026</div>
+        <div class="card-time">16:50 – 18:57 Uhr · 2 h 6 min</div>
+        <div class="card-tags">
+          <span class="tag blue">Stationär</span>
+          <span class="tag">Session 1</span>
         </div>
-        <span class="card-mode mode-stat">Stationär</span>
+        <div class="card-name">Abendsession · Habitatbeobachtung</div>
+        <div class="card-name-en">Evening Session · Habitat Monitoring</div>
       </div>
-      <div class="card-title">Session 2 · Feb 23</div>
       <div class="chips">
-        <span class="chip"><span class="icon">📡</span> NEXUS v2</span>
+        <span class="chip">🌡️ 9.5–20.2 °C</span>
+        <span class="chip">💧 40–66 %</span>
+        <span class="chip">🌬️ windstill</span>
+        <span class="chip">☀️ klar</span>
+        <span class="chip">🛰️ 21 Sats</span>
       </div>
-      <div class="card-footer">
-        <span class="card-pts">26-02-23-1.html</span>
-        <span class="card-link">Dashboard →</span>
+      <div class="card-kpis">
+        <div class="ckpi"><div class="ckpi-label">Druck</div><div class="ckpi-val">1005.1 hPa</div></div>
+        <div class="ckpi"><div class="ckpi-label">Gas</div><div class="ckpi-val">138.0 kΩ</div></div>
+        <div class="ckpi"><div class="ckpi-label">Punkte</div><div class="ckpi-val">3808</div></div>
       </div>
-    </a>
-  </div>
+      <div class="card-us">
+        <div class="us-label">Ultraschall-Kanäle (dB/m)</div>
+        <div class="us-row"><span class="us-key">20k Low</span><div class="us-track"><div class="us-fill" style="width:16%;background:#58a6ff"></div></div><span class="us-num">0.5463 dB/m</span></div>
+        <div class="us-row"><span class="us-key">40k Mid</span><div class="us-track"><div class="us-fill" style="width:32%;background:#3fb950"></div></div><span class="us-num">1.1051 dB/m</span></div>
+        <div class="us-row"><span class="us-key">55k High</span><div class="us-track"><div class="us-fill" style="width:43%;background:#d2a8ff"></div></div><span class="us-num">1.4499 dB/m</span></div>
+        <div class="us-row"><span class="us-key">80k FM</span><div class="us-track"><div class="us-fill" style="width:61%;background:#ffa657"></div></div><span class="us-num">2.0756 dB/m</span></div>
+        <div class="us-row"><span class="us-key">110k CF</span><div class="us-track"><div class="us-fill" style="width:89%;background:#f78166"></div></div><span class="us-num">3.0277 dB/m</span></div>
+      </div>
+      <div class="card-foot">
+        <span class="card-meta">3808 Datenpunkte · 2 s · GPS Fix 99.7 %</span>
+        <a class="card-link" href="05-03-26-1.html">Dashboard →</a>
+      </div>
+    </div>
 
-  <!-- ── SESSION 1 – GARTENTEST 22.02.2026 ── -->
-  <div class="session-card">
-    <a href="nexus_gartentest_22-02-26.html">
-      <div class="card-header">
-        <div>
-          <div class="card-date">22. Februar 2026</div>
-          <div class="card-time">11:17 – 11:35 Uhr · 17 min 56 s</div>
+    <!-- ── SESSION: 23.02.2026 ── -->
+    <div class="session-card">
+      <div class="card-head">
+        <div class="card-date">23. Februar 2026</div>
+        <div class="card-time">Stationär</div>
+        <div class="card-tags">
+          <span class="tag blue">Stationär</span>
+          <span class="tag">Session 2</span>
         </div>
-        <span class="card-mode mode-mobil">Mobil</span>
+        <div class="card-name">Session 2 · Feb 23</div>
+        <div class="card-name-en">NEXUS v2</div>
       </div>
-      <div class="card-title">Gartentest · Garden Test</div>
+      <div class="card-foot" style="margin-top:auto;padding:1rem 1.1rem">
+        <span class="card-meta">26-02-23-1.html</span>
+        <a class="card-link" href="26-02-23-1.html">Dashboard →</a>
+      </div>
+    </div>
+
+    <!-- ── SESSION: 22.02.2026 (Gartentest) ── -->
+    <div class="session-card">
+      <div class="card-head">
+        <div class="card-date">22. Februar 2026</div>
+        <div class="card-time">11:17 – 11:35 Uhr · 17 min 56 s</div>
+        <div class="card-tags">
+          <span class="tag orange">Mobil</span>
+          <span class="tag">Session 1</span>
+        </div>
+        <div class="card-name">Gartentest</div>
+        <div class="card-name-en">Garden Test</div>
+      </div>
       <div class="chips">
-        <span class="chip"><span class="icon">🌡️</span> 13–17 °C</span>
-        <span class="chip"><span class="icon">💧</span> 62–80 %</span>
-        <span class="chip"><span class="icon">🌬️</span> windstill</span>
-        <span class="chip"><span class="icon">☁️</span> bedeckt</span>
-        <span class="chip"><span class="icon">🛰️</span> 8 Sats</span>
+        <span class="chip">🌡️ 13–17 °C</span>
+        <span class="chip">💧 62–80 %</span>
+        <span class="chip">🌬️ windstill</span>
+        <span class="chip">☁️ bedeckt</span>
+        <span class="chip">🛰️ 8 Sats</span>
       </div>
-      <div class="mini-stats">
-        <div class="mini-stat"><div class="k">Druck</div><div class="v" style="color:var(--accent2)">1001.8 hPa</div></div>
-        <div class="mini-stat"><div class="k">Gas</div><div class="v" style="color:var(--accent5)">80.3 kΩ</div></div>
-        <div class="mini-stat"><div class="k">Punkte</div><div class="v" style="color:var(--accent)">539</div></div>
+      <div class="card-kpis">
+        <div class="ckpi"><div class="ckpi-label">Druck</div><div class="ckpi-val">1001.8 hPa</div></div>
+        <div class="ckpi"><div class="ckpi-label">Gas</div><div class="ckpi-val">80.3 kΩ</div></div>
+        <div class="ckpi"><div class="ckpi-label">Punkte</div><div class="ckpi-val">539</div></div>
       </div>
-      <div class="us-bars">
-        <div class="us-bar-label">Ultraschall-Kanäle (dB/m)</div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">20k Low</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:13%;background:var(--accent)"></div></div>
-          <span class="us-bar-val">0.4728 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">40k Mid</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:34%;background:var(--accent2)"></div></div>
-          <span class="us-bar-val">1.2205 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">55k High</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:48%;background:var(--accent5)"></div></div>
-          <span class="us-bar-val">1.7119 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">80k FM</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:70%;background:var(--accent3)"></div></div>
-          <span class="us-bar-val">2.4892 dB/m</span>
-        </div>
-        <div class="us-bar-row">
-          <span class="us-bar-name">110k CF</span>
-          <div class="us-bar-track"><div class="us-bar-fill" style="width:99%;background:var(--accent4)"></div></div>
-          <span class="us-bar-val">3.5319 dB/m</span>
-        </div>
+      <div class="card-us">
+        <div class="us-label">Ultraschall-Kanäle (dB/m)</div>
+        <div class="us-row"><span class="us-key">20k Low</span><div class="us-track"><div class="us-fill" style="width:14%;background:#58a6ff"></div></div><span class="us-num">0.4728 dB/m</span></div>
+        <div class="us-row"><span class="us-key">40k Mid</span><div class="us-track"><div class="us-fill" style="width:36%;background:#3fb950"></div></div><span class="us-num">1.2205 dB/m</span></div>
+        <div class="us-row"><span class="us-key">55k High</span><div class="us-track"><div class="us-fill" style="width:50%;background:#d2a8ff"></div></div><span class="us-num">1.7119 dB/m</span></div>
+        <div class="us-row"><span class="us-key">80k FM</span><div class="us-track"><div class="us-fill" style="width:73%;background:#ffa657"></div></div><span class="us-num">2.4892 dB/m</span></div>
+        <div class="us-row"><span class="us-key">110k CF</span><div class="us-track"><div class="us-fill" style="width:100%;background:#f78166"></div></div><span class="us-num">3.5319 dB/m</span></div>
       </div>
-      <div class="card-footer">
-        <span class="card-pts">539 Datenpunkte · 2 s Intervall · GPS Fix ✓</span>
-        <span class="card-link">Dashboard →</span>
+      <div class="card-foot">
+        <span class="card-meta">539 Datenpunkte · 2 s · GPS Fix ✓</span>
+        <a class="card-link" href="nexus_gartentest_22-02-26.html">Dashboard →</a>
       </div>
-    </a>
-  </div>
+    </div>
 
-  <!-- ── COMING CARD ── -->
-  <div class="session-card coming">
-    <div class="card-header">
-      <div>
-        <div class="card-date">Nächste Session</div>
+    <!-- ── COMING SOON ── -->
+    <div class="session-card coming">
+      <div class="card-head">
+        <div class="card-date" style="color:var(--muted)">Nächste Session</div>
         <div class="card-time">Coming soon · In Vorbereitung</div>
+        <div class="card-tags"><span class="tag">Geplant</span></div>
+        <div class="card-name" style="color:var(--muted)">Next Field Session</div>
       </div>
-      <span class="card-mode mode-coming">Geplant</span>
+      <div class="chips">
+        <span class="chip">📡 NEXUS</span>
+        <span class="chip">🦇 Bat Acoustics</span>
+      </div>
+      <div class="card-foot">
+        <span class="card-meta">— · — Datenpunkte</span>
+        <span class="card-link dim">coming soon</span>
+      </div>
     </div>
-    <div class="card-title">Next Field Session</div>
-    <div class="chips">
-      <span class="chip"><span class="icon">📡</span> NEXUS</span>
-      <span class="chip"><span class="icon">🦇</span> Bat Acoustics</span>
-    </div>
-    <div class="card-footer">
-      <span class="card-pts">— · — Datenpunkte</span>
-      <span class="card-link" style="color:var(--muted)">coming soon</span>
-    </div>
-  </div>
 
-</div>
+  </div><!-- /.sessions -->
+</main>
 
-<!-- SITE FOOTER -->
-<div class="site-footer">
-  NEXUS · Citizen Science Bio-Akustik · ESP32S3 Sense + BME680 + AIR530 + SEN-15901
-  &nbsp;|&nbsp; github.com/scanjack/nexus-fieldlog
-</div>
+<!-- ═══ SITE FOOTER ═══ -->
+<footer class="site-footer">
+  <span>NEXUS · Citizen Science Bio-Akustik · ESP32S3 Sense + BME680 + AIR530 + SEN-15901</span>
+  <span><a href="https://github.com/scanjack/nexus-fieldlog" target="_blank">github.com/scanjack/nexus-fieldlog</a></span>
+</footer>
 
 </body>
 </html>
