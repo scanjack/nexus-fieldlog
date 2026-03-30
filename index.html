@@ -82,6 +82,15 @@
   .badge-purple { color: var(--accent4); border-color: var(--accent4); background: rgba(210,168,255,.08); }
 
   /* ── MAIN ── */
+  <main class="container">
+    
+    <a class="session-card" href="26-03-30.html"> ... </a>
+
+    <a class="session-card" href="26-02-25-1.html"> ... </a>
+
+    <div class="coming-card"> ... </div>
+
+</main>
   .main {
     max-width: 1400px;
     margin: 0 auto;
@@ -350,6 +359,77 @@
     .main { padding: 1rem; }
     .session-grid { grid-template-columns: 1fr; }
   }
+  /* ── SESSION CARDS (New Design) ── */
+  .session-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.2s ease;
+    border-left: 4px solid var(--accent);
+  }
+
+  .session-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    background: #1c2128;
+  }
+
+  .card-header { margin-bottom: 0.5rem; }
+  .card-date { color: var(--accent); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.2rem; }
+  .card-time { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.5rem; }
+  .card-mode { 
+    display: inline-block;
+    font-size: 0.65rem; 
+    background: var(--bg); 
+    padding: 0.1rem 0.5rem; 
+    border-radius: 10px; 
+    border: 1px solid var(--border);
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .card-title { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+
+  .card-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip { 
+    font-size: 0.7rem; 
+    background: rgba(88, 166, 255, 0.1); 
+    color: var(--accent); 
+    padding: 0.2rem 0.6rem; 
+    border-radius: 4px; 
+  }
+
+  .card-stats { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    gap: 1rem; 
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat { display: flex; flex-direction: column; gap: 0.2rem; }
+  .stat-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; }
+  .stat-value { font-size: 0.85rem; color: var(--text); }
+
+  .card-us-label { font-size: 0.7rem; color: var(--muted); font-weight: 700; margin-top: 0.5rem; }
+  .card-us-bars { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.3rem; }
+  .us-row { display: flex; justify-content: space-between; font-size: 0.75rem; }
+  .us-label { color: var(--muted); }
+  .us-value { color: var(--accent); }
+
+  .card-footer { font-size: 0.7rem; color: var(--muted); margin-top: auto; padding-top: 0.5rem; }
+  .card-cta { 
+    text-align: right; 
+    color: var(--accent); 
+    font-weight: 700; 
+    font-size: 0.8rem; 
+    margin-top: 0.5rem; 
+  }
 </style>
 </head>
 <body>
@@ -384,7 +464,7 @@
   </div>
 
   <div class="session-grid">
-
+  
     <!-- ── SESSION 5 · 22.03.2026 · Renaturierung ── -->
     <a class="session-card" href="26-03-22-1.html">
       <div class="card-head">
@@ -588,44 +668,7 @@
         <span class="card-link">Dashboard</span>
       </div>
     </a>
-
-    <!-- ── SESSION 2 · 23.02.2026 ── -->
-    <a class="session-card" href="26-02-23-1.html">
-      <div class="card-head">
-        <div>
-          <div class="card-date">23. Februar 2026</div>
-          <div class="card-time">Session 2</div>
-          <div class="card-name">Session 2 · Feb 23</div>
-          <div class="card-name-en">Stationäre Messung · Stationary</div>
-        </div>
-        <div class="card-mode">Stationär</div>
-      </div>
-      <div class="chips">
-        <span class="chip">📡 NEXUS v2</span>
-      </div>
-      <div class="card-stats">
-        <div class="stat-item">
-          <div class="stat-label">File</div>
-          <div class="stat-val" style="font-size:0.7rem;">26-02-23-1</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-label">Modus</div>
-          <div class="stat-val" style="font-size:0.7rem;">Stat</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-label">Version</div>
-          <div class="stat-val" style="font-size:0.7rem;">v2</div>
-        </div>
-      </div>
-      <div class="card-us">
-        <div class="us-title">Dashboard verfügbar · Dashboard available</div>
-      </div>
-      <div class="card-foot">
-        <span class="card-foot-info">Session 2 · Stationär</span>
-        <span class="card-link">Dashboard</span>
-      </div>
-    </a>
-
+  
     <!-- ── SESSION 1 · 22.02.2026 ── -->
     <a class="session-card" href="nexus_gartentest_22-02-26.html">
       <div class="card-head">
@@ -693,6 +736,84 @@
         <span class="card-link">Dashboard</span>
       </div>
     </a>
+
+<!-- ══ SESSION CARD: 25-02-26-2 · 25.02.2026 ══ -->
+<a class="session-card" href="26-02-25-1.html">
+  <div class="card-header">
+    <div class="card-date mono">25. Februar 2026</div>
+    <div class="card-time mono">16:48:59 – 19:03:31 Uhr · 2 h 14 min 32 s</div>
+    <div class="card-mode">Stationär</div>
+    <div class="card-title">25-02-26-2</div>
+  </div>
+
+  <div class="card-chips">
+    
+    <span class="chip">🌡️ 9–13 °C</span>
+    
+    <span class="chip">💧 70–80 %</span>
+    
+    <span class="chip">🌬️ Ø 1.85 m/s</span>
+    
+    <span class="chip">☀️ klar</span>
+    
+    <span class="chip">🛰️ 21 Sats</span>
+    
+  </div>
+
+  <div class="card-stats">
+    <div class="stat">
+      <span class="stat-label">Druck</span>
+      <span class="stat-value mono">1009.01 hPa</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Gas</span>
+      <span class="stat-value mono">108.68 kΩ</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Punkte</span>
+      <span class="stat-value mono">4037</span>
+    </div>
+  </div>
+
+  <div class="card-us-label">Ultraschall-Kanäle (dB/m)</div>
+  <div class="card-us-bars">
+    
+    <div class="us-row">
+      <span class="us-label">20k Low</span>
+      <span class="us-value mono">0.4884 dB/m</span>
+    </div>
+    
+    <div class="us-row">
+      <span class="us-label">40k Mid</span>
+      <span class="us-value mono">1.1151 dB/m</span>
+    </div>
+    
+    <div class="us-row">
+      <span class="us-label">55k High</span>
+      <span class="us-value mono">1.507 dB/m</span>
+    </div>
+    
+    <div class="us-row">
+      <span class="us-label">80k FM</span>
+      <span class="us-value mono">2.1735 dB/m</span>
+    </div>
+    
+    <div class="us-row">
+      <span class="us-label">110k CF</span>
+      <span class="us-value mono">3.1414 dB/m</span>
+    </div>
+    
+  </div>
+
+  <div class="card-footer mono">
+    4037 Datenpunkte · 2 s Intervall · GPS Fix 99.5%
+  </div>
+
+  <div class="card-cta">Dashboard →</div>
+</a>
+<!-- ══ END SESSION CARD ══ -->
+
+
 
     <!-- ── COMING SOON ── -->
     <div class="coming-card">
